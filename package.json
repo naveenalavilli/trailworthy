@@ -1,0 +1,25 @@
+{
+  "name": "trailworthy",
+  "version": "0.1.0",
+  "description": "Offline trail accessibility scout: walk, talk, and get a cited ABAAS report, with all inference on the device.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "dev": "vite",
+    "build": "node scripts/make-icons.mjs && vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/make-icons.mjs",
+    "calibrate": "node scripts/calibrate.mjs",
+    "demo": "node scripts/demo-report.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "vite": "^7.3.7"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1"
+  }
+}

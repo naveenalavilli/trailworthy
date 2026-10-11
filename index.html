@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1410" />
+  <meta name="description" content="Walk a trail, talk, and get an accessibility report you can file. Runs entirely on your device, with no signal." />
+  <title>Trailworthy - offline trail accessibility scout</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+<noscript>Trailworthy runs its models in your browser, so JavaScript is required.</noscript>
+
+<main id="app">
+
+  <!-- 1. At the trailhead, with signal, before the walk starts. -->
+  <section class="screen is-active" id="screen-trailhead">
+    <header class="masthead">
+      <h1>Trailworthy</h1>
+      <p class="tagline">Walk the trail. Talk. Get a report your parks department can act on.</p>
+    </header>
+
+    <div class="card">
+      <p class="card-note">
+        Everything runs on this device. Your voice and your location never leave it,
+        and once the models are cached the whole survey works with the radio off.
+      </p>
+      <div class="model-status" id="model-status" data-state="idle">
+        <span class="dot"></span>
+        <span id="model-status-text">Models not loaded yet</span>
+      </div>
+      <div class="progress" id="model-progress" hidden>
+        <div class="progress-bar" id="model-progress-bar"></div>
+        <span class="progress-label" id="model-progress-label"></span>
+      </div>
+      <button class="btn btn-secondary" id="btn-load-models" type="button">
+        Download models for offline use (~70 MB, once)
+      </button>
+    </div>
+
+    <form class="card" id="survey-form">
+      <label for="trail-name">Trail</label>
+      <input id="trail-name" name="trailName" type="text" placeholder="Terry Hershey Park, west of Beltway 8" required />
+
+      <label for="surveyor">Your name <span class="optional">(appears on the report)</span></label>
+      <input id="surveyor" name="surveyor" type="text" placeholder="Optional" />
+
+      <label for="agency">Managing agency <span class="optional">(who receives it)</span></label>
+      <input id="agency" name="agency" type="text" placeholder="Harris County Precinct 3 Parks" />
+
+      <label class="checkbox">
+        <input id="use-gps" type="checkbox" checked />
+        <span>Tag findings with GPS, stored only on this device</span>
+      </label>
+
+      <button class="btn btn-primary" id="btn-start" type="submit">Start survey</button>
+      <p class="form-hint">
+        Asks for the microphone now so you are never fighting a permission prompt
+        halfway down a trail.
+      </p>
+    </form>
+
+    <div class="card" id="past-surveys-card" hidden>
+      <h2>Earlier surveys</h2>
+      <ul class="survey-list" id="past-surveys"></ul>
+    </div>
+  </section>
+
+  <!-- 2. On the trail. Dark, one control, meant to go in a pocket. -->
+  <section class="screen screen-field" id="screen-field">
+    <div class="field-head">
+      <span class="field-trail" id="field-trail"></span>
+      <span class="field-clock" id="field-clock">00:00</span>
+    </div>
+
+    <button class="record" id="btn-record" type="button" aria-live="polite">
+      <span class="record-ring"></span>
+      <span class="record-label" id="record-label">Hold to note</span>
+    </button>
+
+    <p class="field-hint" id="field-hint">
+      Say what you see and the measurement if you have one.<br />
+      "Tread narrows to thirty inches past the second bridge."
+    </p>
+
+    <div class="field-stats">
+      <div><strong id="note-count">0</strong><span>notes</span></div>
+      <div><strong id="screen-off">00:00</strong><span>screen off</span></div>
+    </div>
+
+    <button class="btn btn-ghost" id="btn-end" type="button">End survey</button>
+  </section>
+
+  <!-- 3. Back home. The only compute-heavy part, deliberately deferred. -->
+  <section class="screen" id="screen-process">
+    <header class="masthead">
+      <h2>Developing the survey</h2>
+      <p class="tagline">Transcribing and classifying on this device. Still no network.</p>
+    </header>
+    <div class="card">
+      <div class="progress">
+        <div class="progress-bar" id="process-bar"></div>
+        <span class="progress-label" id="process-label">Starting</span>
+      </div>
+      <ul class="note-log" id="note-log"></ul>
+      <button class="btn btn-ghost" id="btn-process-home" type="button" hidden>Back to trailhead</button>
+    </div>
+  </section>
+
+  <!-- 4. The deliverable. -->
+  <section class="screen" id="screen-report">
+    <header class="masthead">
+      <h2 id="report-title">Survey report</h2>
+      <p class="tagline" id="report-meta"></p>
+    </header>
+
+    <div class="summary" id="report-summary"></div>
+    <div class="findings" id="report-findings"></div>
+
+    <div class="card report-actions">
+      <button class="btn btn-primary" id="btn-copy" type="button">Copy as Markdown</button>
+      <button class="btn btn-secondary" id="btn-download" type="button">Download .md</button>
+      <button class="btn btn-secondary" id="btn-print" type="button">Print / save as PDF</button>
+      <button class="btn btn-ghost" id="btn-home" type="button">Back to trailhead</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
