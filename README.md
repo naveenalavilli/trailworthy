@@ -3,9 +3,19 @@
 **Walk a trail, talk, and get an accessibility report your parks department can act on.**
 Everything runs on your own device. No account, no server, no signal required.
 
-Built for the [Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05).
+**[Try it &rarr; naveenalavilli.github.io/trailworthy](https://naveenalavilli.github.io/trailworthy/)**
+
+Load the models once (about 70 MB), then put the device in airplane mode and the
+whole survey still works. It installs as a PWA. Nothing is uploaded at any point,
+so there is no account and no sign-in.
+
+Built for the [Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05),
+and written up [on DEV](https://dev.to/naveen_alavilli/i-built-a-trail-accessibility-surveyor-that-runs-with-the-radio-off-3514).
 
 ![Trailworthy icon](public/icon-192.png)
+
+Not ready to walk anywhere? [`examples/sample-report.md`](examples/sample-report.md)
+is the real output of the full pipeline over a scripted set of notes.
 
 ## The problem
 
